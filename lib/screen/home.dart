@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:money_me_app/screen/settings.dart';
 import 'package:money_me_app/screen/transaction_screen.dart';
 import 'package:money_me_app/utils/color_util.dart';
+
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -21,8 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorUtil.PurpleLight,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 1,
         automaticallyImplyLeading: false,
         backgroundColor: ColorUtil.PurpleBackground,
         title: Container(
@@ -37,10 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Icon(Icons.dashboard,
-                        color: screen == 1
-                            ? ColorUtil.PurpleLight
-                            : Colors.white),
+                    child: Icon(Icons.home,
+                        color:
+                            screen == 1 ? Colors.white : ColorUtil.PurpleLight),
                   ),
                 ),
               ),
@@ -54,10 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Icon(
-                      Icons.history,
-                      color: screen == 2
-                          ? ColorUtil.PurpleLight
-                          : Colors.white,
+                      Icons.insert_chart,
+                      color: screen == 2 ? Colors.white : ColorUtil.PurpleLight,
                     ),
                   ),
                 ),
@@ -72,10 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Icon(
-                      Icons.search,
-                      color: screen == 3
-                          ? ColorUtil.PurpleLight
-                          : Colors.white,
+                      Icons.account_balance_wallet,
+                      color: screen == 3 ? Colors.white : ColorUtil.PurpleLight,
                     ),
                   ),
                 ),
@@ -91,9 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Icon(
                       Icons.account_circle,
-                      color: screen == 4
-                          ? ColorUtil.PurpleLight
-                          : Colors.white,
+                      color: screen == 4 ? Colors.white : ColorUtil.PurpleLight,
                     ),
                   ),
                 ),
@@ -104,7 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         top: true,
-        child: screen == 1 ? TransactionScreen() : screen == 2 ? null : null,
+        child: screen == 1
+            ? TransactionScreen()
+            : screen == 2 ? null : screen == 3 ? null : SettingScreen(),
       ),
     );
   }

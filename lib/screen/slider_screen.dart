@@ -90,7 +90,7 @@ class _SliderScreenState extends State<SliderScreen> {
   void onSkipPress() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => null),
+      MaterialPageRoute(builder: (context) => HomeScreen()),
     );
   }
 
