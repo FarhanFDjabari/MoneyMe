@@ -315,11 +315,11 @@ List<MyTile> financeTiles = <MyTile>[
     'Income',
     <MyTile>[
       MyTile(
-        'Dogs',
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],
@@ -328,11 +328,11 @@ List<MyTile> financeTiles = <MyTile>[
     'Expense',
     <MyTile>[
       MyTile(
-        'Dogs',
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],
@@ -344,11 +344,11 @@ List<MyTile> glTiles = <MyTile>[
     'Cash & Cash Equivalent',
     <MyTile>[
       MyTile(
-        'Dogs',
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],
@@ -356,12 +356,12 @@ List<MyTile> glTiles = <MyTile>[
   MyTile(
     'Credit',
     <MyTile>[
-      new MyTile(
-        'Dogs',
+      MyTile(
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],
@@ -369,12 +369,12 @@ List<MyTile> glTiles = <MyTile>[
   MyTile(
     'Assets',
     <MyTile>[
-      new MyTile(
-        'Dogs',
+      MyTile(
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],
@@ -382,12 +382,12 @@ List<MyTile> glTiles = <MyTile>[
   MyTile(
     'Credit Card',
     <MyTile>[
-      new MyTile(
-        'Dogs',
+      MyTile(
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],
@@ -395,12 +395,12 @@ List<MyTile> glTiles = <MyTile>[
   MyTile(
     'Debt',
     <MyTile>[
-      new MyTile(
-        'Dogs',
+      MyTile(
+        'SubCategory',
         <MyTile>[
-          new MyTile('Coton de Tulear'),
-          new MyTile('German Shepherd'),
-          new MyTile('Poodle'),
+          new MyTile('Account'),
+          new MyTile('Account'),
+          new MyTile('Account'),
         ],
       ),
     ],

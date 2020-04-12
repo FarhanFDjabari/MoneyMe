@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:money_me_app/screen/home.dart';
 import 'package:money_me_app/utils/color_util.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:money_me_app/screen/backup_option.dart';
 import 'package:money_me_app/screen/general_option.dart';
@@ -7,19 +8,37 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key key}) : super(key: key);
 
 
-//  _appVersion(BuildContext context) {
-//    return showDialog(
-//      builder: (context) => AlertDialog(
-//        title: Text('Triplen App',
-//            textAlign: TextAlign.center, style: TextStyle(fontSize: 20.0)),
-//        content: Text(
-//          'Version 0.0.5',
-//          textAlign: TextAlign.center,
-//        ),
-//      ),
-//      context: context,
-//    );
-//  }
+  _removeAds(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Remove Ads', style: TextStyle(fontSize: 20.0)),
+        content: Text('Are you sure?'),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () =>
+              Navigator.pop(context),
+            child: Text('Cancel', style: TextStyle(
+            color: Colors.black,
+                fontSize: 18.0)),
+          ),
+          FlatButton(
+            onPressed: () => {},
+            child: Container(
+                margin: EdgeInsets.only(left: 5),
+                padding: EdgeInsets.symmetric(
+                    vertical: 10, horizontal: 15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.transparent),
+                child: Text('Remove Ads', style: TextStyle(
+                    color: ColorUtil.PurpleBackground,
+                    fontSize: 18.0))),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +68,14 @@ class ProfileScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
+                      AutoSizeText(
                         'User',
                         style: TextStyle(
                             color: ColorUtil.PurpleBackground,
                             fontSize: 22,
                             fontWeight: FontWeight.bold),
                       ),
-                      Text(
+                      AutoSizeText(
                         'Email',
                         style: TextStyle(
                             color: ColorUtil.greyColor,
@@ -137,10 +156,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => null)),
+                onTap: () => _removeAds(context),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
@@ -173,6 +189,9 @@ class ProfileScreen extends StatelessWidget {
                 height: 20,
               ),
               InkWell(
+                splashColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onTap: () {
 
                 },
