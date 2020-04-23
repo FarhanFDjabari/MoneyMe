@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:money_me_app/screens/budget_screen/active_page.dart';
 import 'package:money_me_app/screens/budget_screen/future_page.dart';
 import 'package:money_me_app/screens/budget_screen/past_page.dart';
+import 'package:money_me_app/services/budget_services.dart';
 import 'package:money_me_app/utils/color_util.dart';
+import 'package:provider/provider.dart';
 
 class BudgetPage extends StatefulWidget {
   @override
@@ -52,19 +54,26 @@ class _BudgetPageState extends State<BudgetPage> {
 
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(settings.preferredSize.height),
-            child: Container(
-                color: ColorUtil.PurpleBackground,
-                child: settings)),
-        body: TabBarView(
-          children: <Widget>[
-            PastPage(),
-            ActivePage(),
-            FuturePage()
-          ],
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<BudgetService> (
+            create: (context) => BudgetService(),
+          )
+        ],
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(settings.preferredSize.height),
+              child: Container(
+                  color: ColorUtil.PurpleBackground,
+                  child: settings)),
+          body: TabBarView(
+            children: <Widget>[
+              PastPage(),
+              ActivePage(),
+              FuturePage(),
+            ],
+          ),
         ),
       ),
     );

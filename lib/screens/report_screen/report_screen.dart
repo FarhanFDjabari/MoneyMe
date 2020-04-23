@@ -415,11 +415,11 @@ class _ReportScreenState extends State<ReportScreen> {
   SnackBar _snackBar() {
     Duration _snackBarDisplayDuration = new Duration(seconds: 2);
     return SnackBar(
-        content: Text('Your transaction has been export'),
+        content: Text('Your transaction has been exported'),
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
-            textColor: ColorUtil.PurpleBackground,
-            label: 'DETAIL',
+            textColor: ColorUtil.PurpleLight,
+            label: 'Detail',
             onPressed: () {}),
         duration: _snackBarDisplayDuration);
   }

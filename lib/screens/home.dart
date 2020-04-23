@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money_me_app/models/transaction_model.dart';
 import 'package:money_me_app/screens/budget_screen/budget_page.dart';
 import 'package:money_me_app/screens/report_screen/report_screen.dart';
 import 'package:money_me_app/screens/settings.dart';
 import 'package:money_me_app/screens/transaction_screen.dart';
-import 'package:money_me_app/services/changePeriod.dart';
-import 'package:money_me_app/services/dateBarColor.dart';
-import 'package:money_me_app/services/itemCourt.dart';
+import 'package:money_me_app/services/change_period.dart';
+import 'package:money_me_app/services/date_bar_color.dart';
+import 'package:money_me_app/services/item_count.dart';
+import 'package:money_me_app/services/setting_service.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:provider/provider.dart';
+import 'package:money_me_app/services/transaction_service.dart';
+
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -22,10 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
-
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -44,7 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         ChangeNotifierProvider<ItemCount>(
           create: (context) => ItemCount(),
-        )
+        ),
+        ChangeNotifierProvider<TransactionService> (
+          create: (context) => TransactionService(),
+        ),
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -65,9 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 15),
                       child: Icon(Icons.home,
-                          color: screen == 1
-                              ? Colors.white
-                              : ColorUtil.PurpleLight),
+                          color:
+                              screen == 1 ? Colors.white : ColorUtil.PurpleLight),
                     ),
                   ),
                 ),
@@ -82,8 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: EdgeInsets.symmetric(vertical: 15),
                       child: Icon(
                         Icons.insert_chart,
-                        color:
-                            screen == 2 ? Colors.white : ColorUtil.PurpleLight,
+                        color: screen == 2 ? Colors.white : ColorUtil.PurpleLight,
                       ),
                     ),
                   ),
@@ -99,8 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: EdgeInsets.symmetric(vertical: 15),
                       child: Icon(
                         Icons.account_balance_wallet,
-                        color:
-                            screen == 3 ? Colors.white : ColorUtil.PurpleLight,
+                        color: screen == 3 ? Colors.white : ColorUtil.PurpleLight,
                       ),
                     ),
                   ),
@@ -116,8 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: EdgeInsets.symmetric(vertical: 15),
                       child: Icon(
                         Icons.account_circle,
-                        color:
-                            screen == 4 ? Colors.white : ColorUtil.PurpleLight,
+                        color: screen == 4 ? Colors.white : ColorUtil.PurpleLight,
                       ),
                     ),
                   ),
@@ -130,9 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
           top: true,
           child: screen == 1
               ? TransactionScreen()
-              : screen == 2
-                  ? ReportScreen()
-                  : screen == 3 ? BudgetPage() : SettingScreen(),
+              : screen == 2 ? ReportScreen()
+              : screen == 3 ? BudgetPage()
+              : SettingScreen(),
         ),
       ),
     );

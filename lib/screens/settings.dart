@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:money_me_app/screens/account_setting.dart';
 import 'package:money_me_app/screens/display_setting.dart';
 import 'package:money_me_app/screens/settings_profile.dart';
+import 'package:money_me_app/services/setting_service.dart';
 import 'package:money_me_app/utils/color_util.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   SettingScreen({Key key}) : super(key: key);
@@ -15,7 +17,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -53,19 +54,26 @@ class _SettingScreenState extends State<SettingScreen> {
 
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(settings.preferredSize.height),
-            child: Container(
-                color: ColorUtil.PurpleBackground,
-                child: settings)),
-        body: TabBarView(
-          children: <Widget>[
-            AccountSetting(),
-            DisplaySettings(),
-            ProfileScreen(),
-          ],
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<SettingService> (
+            create: (context) => SettingService(),
+          )
+        ],
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(settings.preferredSize.height),
+              child: Container(
+                  color: ColorUtil.PurpleBackground,
+                  child: settings)),
+          body: TabBarView(
+            children: <Widget>[
+              AccountSetting(),
+              DisplaySettings(),
+              ProfileScreen(),
+            ],
+          ),
         ),
       ),
     );
