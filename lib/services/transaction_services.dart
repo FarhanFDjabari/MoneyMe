@@ -36,4 +36,27 @@ class TransactionService with ChangeNotifier {
       throw Exception('Failed to load transaction');
     }
   }
+
+  Future<bool> postTransaction(String id,dynamic data) async {
+    final response = await http.post(
+      'http://moneyme.lokertim.com/api/transactions/' + id,
+      body: jsonEncode(<String, dynamic>{
+        'account_form_view': data,
+        'account_to_view': data,
+        'transaction_name': data,
+        'description': data,
+        'date': data,
+        'amount': data,
+        'id_type': "1",
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return true;
+    } else {
+      throw Exception('Failed to load transaction');
+    }
+  }
 }
