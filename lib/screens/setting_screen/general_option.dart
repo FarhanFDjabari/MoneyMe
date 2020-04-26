@@ -109,10 +109,10 @@ class _GeneralProfileState extends State<GeneralProfile> {
     });
   }
 
-  List<DropdownMenuItem<Currency>> buildDropdownCurrency(List Currencies) {
+  List<DropdownMenuItem<Currency>> buildDropdownCurrency(List currencies) {
     List<DropdownMenuItem<Currency>> items = List();
 
-    for (Currency currency in Currencies) {
+    for (Currency currency in currencies) {
       items.add(
         DropdownMenuItem(
           value: currency,
@@ -130,10 +130,10 @@ class _GeneralProfileState extends State<GeneralProfile> {
     });
   }
 
-  List<DropdownMenuItem<Theme>> buildDropdownTheme(List Themes) {
+  List<DropdownMenuItem<Theme>> buildDropdownTheme(List themes) {
     List<DropdownMenuItem<Theme>> items = List();
 
-    for (Theme theme in Themes) {
+    for (Theme theme in themes) {
       items.add(
         DropdownMenuItem(
           value: theme,

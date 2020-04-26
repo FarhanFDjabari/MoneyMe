@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:money_me_app/models/budget_model.dart';
+import 'package:money_me_app/services/budget_services.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -10,23 +12,34 @@ class ActivePage extends StatefulWidget {
 class _ActivePageState extends State<ActivePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  Future<Budget> futureBudget;
+
   DateTime _dateTime;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    futureBudget = fetchBudget();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: ListView.builder(
-          itemCount: 25,
-          itemBuilder: (context, index) {
-            return budgetCard();
-          }),
+      body: FutureBuilder<Budget>(
+        future: futureBudget,
+        builder: (context, snapshot) {
+          if (snapshot.data.listActiveBudget.length != 0) {
+            return ListView.builder(
+                itemCount: snapshot.data.listActiveBudget.length, //statis
+                itemBuilder: (context, index) {
+                  return budgetCard(snapshot.data, index);
+                });
+          }
+
+          return Center(child: CircularProgressIndicator(backgroundColor: Colors.purple,));
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtil.PurpleBackground,
         onPressed: () {
@@ -37,7 +50,8 @@ class _ActivePageState extends State<ActivePage> {
     );
   }
 
-  Card budgetCard() {
+  Card budgetCard(data, int index) {
+    dynamic dataActive = data.listActiveBudget[index];
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -63,7 +77,10 @@ class _ActivePageState extends State<ActivePage> {
             SizedBox(height: 20),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text("Periode"), Text("Budget")]),
+                children: <Widget>[
+                  Text(dataActive.dateFrom),
+                  Text(dataActive.budget)
+                ]),
           ],
         ),
       ),
@@ -152,7 +169,6 @@ class _ActivePageState extends State<ActivePage> {
                                     BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Account Date',
-                              
                             ),
                           ),
                         ),
@@ -250,7 +266,7 @@ class _ActivePageState extends State<ActivePage> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2010),
         lastDate: DateTime(2045),
-      ).then((date){
+      ).then((date) {
         setState(() {
           _dateTime = date;
         });

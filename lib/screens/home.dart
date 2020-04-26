@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money_me_app/screens/budget_screen/budget_page.dart';
 import 'package:money_me_app/screens/report_screen/report_screen.dart';
-import 'package:money_me_app/screens/settings.dart';
-import 'package:money_me_app/screens/transaction_screen.dart';
+import 'package:money_me_app/screens/setting_screen/settings.dart';
+import 'package:money_me_app/screens/transaction_screen/transaction_screen.dart';
 import 'package:money_me_app/services/changePeriod.dart';
 import 'package:money_me_app/services/dateBarColor.dart';
-import 'package:money_me_app/services/itemCourt.dart';
+import 'package:money_me_app/services/item_count.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
 
     super.initState();
 

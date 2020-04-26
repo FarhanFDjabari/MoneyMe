@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_me_app/utils/color_util.dart';
 
 class DisplaySettings extends StatelessWidget{
   DisplaySettings({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SafeArea(
       top: true,
       child: Scaffold(

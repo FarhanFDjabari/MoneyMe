@@ -14,7 +14,6 @@ class _BudgetPageState extends State<BudgetPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -26,25 +25,19 @@ class _BudgetPageState extends State<BudgetPage> {
         Tab(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-                'Past'
-            ),
+            child: Text('Past'),
           ),
         ),
         Tab(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-                'Active'
-            ),
+            child: Text('Active'),
           ),
         ),
         Tab(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-                'Future'
-            ),
+            child: Text('Future'),
           ),
         ),
       ],
@@ -56,15 +49,10 @@ class _BudgetPageState extends State<BudgetPage> {
         backgroundColor: Colors.white,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(settings.preferredSize.height),
-            child: Container(
-                color: ColorUtil.PurpleBackground,
-                child: settings)),
+            child:
+                Container(color: ColorUtil.PurpleBackground, child: settings)),
         body: TabBarView(
-          children: <Widget>[
-            PastPage(),
-            ActivePage(),
-            FuturePage()
-          ],
+          children: <Widget>[PastPage(), ActivePage(), FuturePage()],
         ),
       ),
     );

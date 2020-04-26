@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_me_app/screens/account_setting.dart';
-import 'package:money_me_app/screens/display_setting.dart';
-import 'package:money_me_app/screens/settings_profile.dart';
+import 'package:money_me_app/screens/setting_screen/account_setting.dart';
+import 'package:money_me_app/screens/setting_screen/display_setting.dart';
+import 'package:money_me_app/screens/setting_screen/settings_profile.dart';
 import 'package:money_me_app/utils/color_util.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -15,7 +15,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

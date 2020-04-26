@@ -1,15 +1,23 @@
 class Setting {
   final List<Profile> listProfile;
-  final List<Display> listDisplay;
+  final Display display;
   final List<Account> listAccount;
 
-  Setting({this.listProfile, this.listDisplay, this.listAccount});
+  Setting({this.listProfile, this.display, this.listAccount});
 
   factory Setting.fromJson(Map<String, dynamic> json) {
+    var listProfile = json['profile'] as List;
+    List<Profile> profileList =
+        listProfile.map((i) => Profile.fromJson(i)).toList();
+
+    var listAccount = json['account'] as List;
+    List<Account> accountList =
+        listAccount.map((i) => Account.fromJson(i)).toList();
+
     return Setting(
-      listProfile: json['profile'].map((i) => Profile.fromJson(i)).toList(),
-      listAccount: json['account'].map((i) => Account.fromJson(i)).toList(),
-      listDisplay: json['display'].map((i) => Display.fromJson(i)).toList(),
+      listProfile: profileList,
+      listAccount: accountList,
+      display: null,
     );
   }
 }
@@ -67,12 +75,17 @@ class Display {
   Display({this.listTransactionType, this.listCategory});
 
   factory Display.fromJson(Map<String, dynamic> json) {
+    var listTransactionType = json['transaction_type'] as List;
+    List<TransactionType> transactionTypeList =
+        listTransactionType.map((i) => TransactionType.fromJson(i)).toList();
+
+    var listCategory = json['categories'] as List;
+    List<Category> categoryList =
+        listCategory.map((i) => Category.fromJson(i)).toList();
+
     return Display(
-      listTransactionType: json['transaction_type']
-          .map((i) => TransactionType.fromJson(i))
-          .toList(),
-      listCategory:
-          json['categories'].map((i) => Category.fromJson(i)).tiList(),
+      listTransactionType: transactionTypeList,
+      listCategory: categoryList,
     );
   }
 }
@@ -123,16 +136,39 @@ class Category {
 }
 
 class Account {
-  final String categoryName;
-  final String subcategoryName;
-  final String accountName;
+  final List<Subcategory> listSubcategory;
 
-  Account({this.categoryName, this.subcategoryName, this.accountName});
+  Account({this.listSubcategory});
 
   factory Account.fromJson(Map<String, dynamic> json) {
-    return Account(
-        categoryName: json['category_name'],
-        subcategoryName: json['subcategory_name'],
-        accountName: json['account_name']);
+    var listSub = json['subcategory'] as List;
+    List<Subcategory> subList =
+        listSub.map((i) => Subcategory.fromJson(i)).toList();
+
+    return Account(listSubcategory: subList);
+  }
+}
+
+class Subcategory {
+  final String accountId;
+  final String accountName;
+  final String subcategoryId;
+  final String balance;
+  final String idType;
+
+  Subcategory(
+      {this.accountId,
+      this.accountName,
+      this.subcategoryId,
+      this.balance,
+      this.idType});
+
+  factory Subcategory.fromJson(Map<String, dynamic> json) {
+    return Subcategory(
+        accountId: json['account_id'],
+        accountName: json['account_name'],
+        subcategoryId: json['subcategory_id'],
+        balance: json['balance'],
+        idType: json['id_type']);
   }
 }

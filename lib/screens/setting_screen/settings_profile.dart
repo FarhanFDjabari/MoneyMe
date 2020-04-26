@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:money_me_app/screens/backup_option.dart';
-import 'package:money_me_app/screens/general_option.dart';
+import 'package:money_me_app/screens/setting_screen/backup_option.dart';
+import 'package:money_me_app/screens/setting_screen/general_option.dart';
 import 'package:money_me_app/utils/color_util.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -200,9 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(color: Colors.black, fontSize: 18.0)),
           ),
           FlatButton(
-            onPressed: () => {
-              Navigator.pop(context)
-            },
+            onPressed: () => Navigator.pop(context),
             child: Container(
                 margin: EdgeInsets.only(left: 5),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),

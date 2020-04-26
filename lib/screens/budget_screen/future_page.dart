@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:money_me_app/models/budget_model.dart';
+import 'package:money_me_app/services/budget_services.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -10,20 +12,37 @@ class FuturePage extends StatefulWidget {
 class _FuturePageState extends State<FuturePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  Future<Budget> futureBudget;
+
   @override
   void initState() {
     super.initState();
+    futureBudget = fetchBudget();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: ListView.builder(
-          itemCount: 25,
-          itemBuilder: (context, index) {
-            return budgetCard();
-          }),
+      body: FutureBuilder<Budget>(
+        future: futureBudget,
+        builder: (context, snapshot) {
+          if (snapshot.data.listFutureBudget.length != 0) {
+            return ListView.builder(
+                itemCount: snapshot.data.listFutureBudget.length, //statis
+                itemBuilder: (context, index) {
+                  return budgetCard(snapshot.data, index);
+                });
+          } else if (snapshot.data.listFutureBudget.length == 0) {
+            return Center(child: Text('Tidak ada budget'));
+          }
+
+          return Center(
+              child: CircularProgressIndicator(
+            backgroundColor: Colors.purple,
+          ));
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtil.PurpleBackground,
         onPressed: () {
@@ -34,7 +53,8 @@ class _FuturePageState extends State<FuturePage> {
     );
   }
 
-  Card budgetCard() {
+  Card budgetCard(data, int index) {
+    dynamic dataActive = data.listFutureBudget[index];
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -60,7 +80,10 @@ class _FuturePageState extends State<FuturePage> {
             SizedBox(height: 20),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text("Periode"), Text("Budget")]),
+                children: <Widget>[
+                  Text(dataActive.dateFrom),
+                  Text(dataActive.budget)
+                ]),
           ],
         ),
       ),
