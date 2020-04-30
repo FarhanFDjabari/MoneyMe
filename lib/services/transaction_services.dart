@@ -37,16 +37,16 @@ class TransactionService with ChangeNotifier {
     }
   }
 
-  Future<bool> postTransaction(String id,dynamic data) async {
+  Future<bool> createTransaction(String id, String date, String transaction, String form, String to, String desc, String amount) async {
     final response = await http.post(
       'http://moneyme.lokertim.com/api/transactions/' + id,
       body: jsonEncode(<String, dynamic>{
-        'account_form_view': data,
-        'account_to_view': data,
-        'transaction_name': data,
-        'description': data,
-        'date': data,
-        'amount': data,
+        'date': date,
+        'transaction': transaction,
+        'account_form': form,
+        'account_to': to,
+        'description': desc,
+        'amount': amount,
         'id_type': "1",
       }),
     );

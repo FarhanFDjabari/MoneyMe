@@ -7,6 +7,7 @@ import 'package:money_me_app/screens/transaction_screen/transaction_screen.dart'
 import 'package:money_me_app/services/changePeriod.dart';
 import 'package:money_me_app/services/dateBarColor.dart';
 import 'package:money_me_app/services/item_count.dart';
+import 'package:money_me_app/services/transaction_services.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-
     super.initState();
 
     SystemChrome.setPreferredOrientations([
@@ -43,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         ChangeNotifierProvider<ItemCount>(
           create: (context) => ItemCount(),
-        )
+        ),
+        ChangeNotifierProvider<TransactionService>(
+            create: (context) => TransactionService())
       ],
       child: Scaffold(
         backgroundColor: Colors.white,

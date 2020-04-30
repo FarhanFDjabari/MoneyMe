@@ -10,7 +10,7 @@ Future<bool> createAccount(String name, String subcategory) async {
     },
     body: jsonEncode(<String, String>{
       'account_name': name,
-      'subcategory_id' : "1"
+      'subcategory_id' : subcategory
     }),
   );
 

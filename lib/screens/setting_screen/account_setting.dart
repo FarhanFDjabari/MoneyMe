@@ -17,6 +17,7 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingState extends State<AccountSetting> {
+    
   final _controllerName = TextEditingController();
   final _controllerSubCategory = TextEditingController();
 
@@ -27,7 +28,6 @@ class _AccountSettingState extends State<AccountSetting> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
 
     return SafeArea(
       top: true,

@@ -24,17 +24,18 @@ import '../../services/transaction_services.dart';
 class TransactionScreen extends StatelessWidget {
   TransactionScreen({Key key}) : super(key: key);
 
-  final TextEditingController _transactionController = new TextEditingController();
-  final TextEditingController _dateController = new TextEditingController();
-  final TextEditingController _accFromController = new TextEditingController();
-  final TextEditingController _accToController = new TextEditingController();
-  final TextEditingController _descriptionController = new TextEditingController();
-  final TextEditingController _priceController = new TextEditingController();
   final DateFormat dateFormat = DateFormat('dd-MMM-yyyy HH:mm');
+  final _dateController = TextEditingController();
+  final _transactionController = TextEditingController();
+  final _accFromController = TextEditingController();
+  final _accToController = TextEditingController();
+  final _descController = TextEditingController();
+  final _amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final TransactionService transactionService = Provider.of<TransactionService>(context);
+    final TransactionService transactionService =
+        Provider.of<TransactionService>(context);
     return Scaffold(
       body: Container(
         width: ScreenUtil.screenWidthDp,
@@ -47,7 +48,7 @@ class TransactionScreen extends StatelessWidget {
                   builder: (context, dateBarColor, _) => FutureBuilder(
                       future: transactionService.fetchTransaction("1"),
                       builder: (context, snapshot) {
-                        if(snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.connectionState == ConnectionState.done) {
                           return Column(
                             children: <Widget>[
                               Container(
@@ -55,7 +56,8 @@ class TransactionScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(
                                     top: 10, bottom: 15, left: 10, right: 10),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     InkWell(
                                       onTap: () {
@@ -63,8 +65,10 @@ class TransactionScreen extends StatelessWidget {
                                             isScrollControlled: true,
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.only(
-                                                topLeft: const Radius.circular(10),
-                                                topRight: const Radius.circular(10),
+                                                topLeft:
+                                                    const Radius.circular(10),
+                                                topRight:
+                                                    const Radius.circular(10),
                                               ),
                                             ),
                                             context: context,
@@ -73,7 +77,8 @@ class TransactionScreen extends StatelessWidget {
                                                 onWillPop: () async => false,
                                                 child: Container(
                                                     padding: EdgeInsets.only(
-                                                        bottom: MediaQuery.of(context)
+                                                        bottom: MediaQuery.of(
+                                                                context)
                                                             .viewInsets
                                                             .bottom),
                                                     color: Colors.transparent,
@@ -81,37 +86,47 @@ class TransactionScreen extends StatelessWidget {
                                                       children: <Widget>[
                                                         Column(
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                           crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: <Widget>[
                                                             Container(
-                                                              margin: EdgeInsets.only(
-                                                                  top: 25, bottom: 15),
-                                                              padding:
-                                                              EdgeInsets.symmetric(
-                                                                  horizontal: 20),
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      top: 25,
+                                                                      bottom:
+                                                                          15),
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          20),
                                                               child: Row(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                                children: <Widget>[
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: <
+                                                                    Widget>[
                                                                   AutoSizeText(
                                                                     'Choose Period',
-                                                                    style: TextStyle(
-                                                                      fontSize: 25,
-                                                                      color:
-                                                                      Colors.black,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          25,
+                                                                      color: Colors
+                                                                          .black,
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
+                                                                          FontWeight
+                                                                              .w800,
                                                                     ),
                                                                   ),
                                                                   IconButton(
                                                                     icon: Icon(
-                                                                      Icons.close,
-                                                                      color:
-                                                                      Colors.black,
+                                                                      Icons
+                                                                          .close,
+                                                                      color: Colors
+                                                                          .black,
                                                                       size: 28,
                                                                     ),
                                                                     onPressed: () =>
@@ -122,17 +137,20 @@ class TransactionScreen extends StatelessWidget {
                                                               ),
                                                             ),
                                                             Center(
-                                                              child: AnimatedContainer(
+                                                              child:
+                                                                  AnimatedContainer(
                                                                 duration: Duration(
-                                                                    milliseconds: 500),
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    bottom: 10),
+                                                                    milliseconds:
+                                                                        500),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10),
                                                                 child: InkWell(
                                                                   onTap: () {
                                                                     selectedPeriod
-                                                                        .selectPeriod =
-                                                                    'Daily';
+                                                                            .selectPeriod =
+                                                                        'Daily';
                                                                     getItemCount
                                                                         .setItem = 14;
                                                                     dateBarColor
@@ -140,70 +158,70 @@ class TransactionScreen extends StatelessWidget {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  child: Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                  child:
+                                                                      Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         1.2,
-                                                                    padding: EdgeInsets
-                                                                        .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                        12,
+                                                                            12,
                                                                         horizontal:
-                                                                        55),
+                                                                            55),
                                                                     decoration:
-                                                                    BoxDecoration(
-                                                                      color: selectedPeriod
-                                                                          .selectedPeriod ==
-                                                                          'Daily'
+                                                                        BoxDecoration(
+                                                                      color: selectedPeriod.selectedPeriod ==
+                                                                              'Daily'
                                                                           ? ColorUtil
-                                                                          .PurpleBackground
+                                                                              .PurpleBackground
                                                                           : Colors
-                                                                          .transparent,
+                                                                              .transparent,
                                                                       border: Border.all(
                                                                           color: ColorUtil
                                                                               .PurpleBackground,
-                                                                          width: 1),
+                                                                          width:
+                                                                              1),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          5),
+                                                                          BorderRadius.circular(
+                                                                              5),
                                                                     ),
-                                                                    child: AutoSizeText(
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "Daily",
                                                                       style: TextStyle(
-                                                                          color: selectedPeriod
-                                                                              .selectedPeriod ==
-                                                                              'Daily'
+                                                                          color: selectedPeriod.selectedPeriod == 'Daily'
                                                                               ? Colors
-                                                                              .white
+                                                                                  .white
                                                                               : ColorUtil
-                                                                              .PurpleBackground,
-                                                                          fontSize: 15,
+                                                                                  .PurpleBackground,
+                                                                          fontSize:
+                                                                              15,
                                                                           fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                              FontWeight.w500),
                                                                       textAlign:
-                                                                      TextAlign
-                                                                          .center,
+                                                                          TextAlign
+                                                                              .center,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                             Center(
-                                                              child: AnimatedContainer(
+                                                              child:
+                                                                  AnimatedContainer(
                                                                 duration: Duration(
-                                                                    milliseconds: 500),
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    bottom: 10),
+                                                                    milliseconds:
+                                                                        500),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10),
                                                                 child: InkWell(
                                                                   onTap: () {
                                                                     selectedPeriod
-                                                                        .selectPeriod =
-                                                                    'Weekly';
+                                                                            .selectPeriod =
+                                                                        'Weekly';
                                                                     getItemCount
                                                                         .setItem = 8;
                                                                     dateBarColor
@@ -211,70 +229,70 @@ class TransactionScreen extends StatelessWidget {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  child: Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                  child:
+                                                                      Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         1.2,
-                                                                    padding: EdgeInsets
-                                                                        .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                        12,
+                                                                            12,
                                                                         horizontal:
-                                                                        55),
+                                                                            55),
                                                                     decoration:
-                                                                    BoxDecoration(
-                                                                      color: selectedPeriod
-                                                                          .selectedPeriod ==
-                                                                          'Weekly'
+                                                                        BoxDecoration(
+                                                                      color: selectedPeriod.selectedPeriod ==
+                                                                              'Weekly'
                                                                           ? ColorUtil
-                                                                          .PurpleBackground
+                                                                              .PurpleBackground
                                                                           : Colors
-                                                                          .transparent,
+                                                                              .transparent,
                                                                       border: Border.all(
                                                                           color: ColorUtil
                                                                               .PurpleBackground,
-                                                                          width: 1),
+                                                                          width:
+                                                                              1),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          5),
+                                                                          BorderRadius.circular(
+                                                                              5),
                                                                     ),
-                                                                    child: AutoSizeText(
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "Weekly",
                                                                       style: TextStyle(
-                                                                          color: selectedPeriod
-                                                                              .selectedPeriod ==
-                                                                              'Weekly'
+                                                                          color: selectedPeriod.selectedPeriod == 'Weekly'
                                                                               ? Colors
-                                                                              .white
+                                                                                  .white
                                                                               : ColorUtil
-                                                                              .PurpleBackground,
-                                                                          fontSize: 15,
+                                                                                  .PurpleBackground,
+                                                                          fontSize:
+                                                                              15,
                                                                           fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                              FontWeight.w500),
                                                                       textAlign:
-                                                                      TextAlign
-                                                                          .center,
+                                                                          TextAlign
+                                                                              .center,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                             Center(
-                                                              child: AnimatedContainer(
+                                                              child:
+                                                                  AnimatedContainer(
                                                                 duration: Duration(
-                                                                    milliseconds: 500),
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    bottom: 10),
+                                                                    milliseconds:
+                                                                        500),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10),
                                                                 child: InkWell(
                                                                   onTap: () {
                                                                     selectedPeriod
-                                                                        .selectPeriod =
-                                                                    'Monthly';
+                                                                            .selectPeriod =
+                                                                        'Monthly';
                                                                     getItemCount
                                                                         .setItem = 12;
                                                                     dateBarColor
@@ -282,70 +300,70 @@ class TransactionScreen extends StatelessWidget {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  child: Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                  child:
+                                                                      Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         1.2,
-                                                                    padding: EdgeInsets
-                                                                        .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                        12,
+                                                                            12,
                                                                         horizontal:
-                                                                        55),
+                                                                            55),
                                                                     decoration:
-                                                                    BoxDecoration(
-                                                                      color: selectedPeriod
-                                                                          .selectedPeriod ==
-                                                                          'Monthly'
+                                                                        BoxDecoration(
+                                                                      color: selectedPeriod.selectedPeriod ==
+                                                                              'Monthly'
                                                                           ? ColorUtil
-                                                                          .PurpleBackground
+                                                                              .PurpleBackground
                                                                           : Colors
-                                                                          .transparent,
+                                                                              .transparent,
                                                                       border: Border.all(
                                                                           color: ColorUtil
                                                                               .PurpleBackground,
-                                                                          width: 1),
+                                                                          width:
+                                                                              1),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          5),
+                                                                          BorderRadius.circular(
+                                                                              5),
                                                                     ),
-                                                                    child: AutoSizeText(
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "Monthly",
                                                                       style: TextStyle(
-                                                                          color: selectedPeriod
-                                                                              .selectedPeriod ==
-                                                                              'Monthly'
+                                                                          color: selectedPeriod.selectedPeriod == 'Monthly'
                                                                               ? Colors
-                                                                              .white
+                                                                                  .white
                                                                               : ColorUtil
-                                                                              .PurpleBackground,
-                                                                          fontSize: 15,
+                                                                                  .PurpleBackground,
+                                                                          fontSize:
+                                                                              15,
                                                                           fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                              FontWeight.w500),
                                                                       textAlign:
-                                                                      TextAlign
-                                                                          .center,
+                                                                          TextAlign
+                                                                              .center,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                             Center(
-                                                              child: AnimatedContainer(
+                                                              child:
+                                                                  AnimatedContainer(
                                                                 duration: Duration(
-                                                                    milliseconds: 500),
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    bottom: 10),
+                                                                    milliseconds:
+                                                                        500),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10),
                                                                 child: InkWell(
                                                                   onTap: () {
                                                                     selectedPeriod
-                                                                        .selectPeriod =
-                                                                    'Yearly';
+                                                                            .selectPeriod =
+                                                                        'Yearly';
                                                                     getItemCount
                                                                         .setItem = 10;
                                                                     dateBarColor
@@ -353,95 +371,90 @@ class TransactionScreen extends StatelessWidget {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  child: Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                  child:
+                                                                      Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         1.2,
-                                                                    padding: EdgeInsets
-                                                                        .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                        12,
+                                                                            12,
                                                                         horizontal:
-                                                                        55),
+                                                                            55),
                                                                     decoration:
-                                                                    BoxDecoration(
-                                                                      color: selectedPeriod
-                                                                          .selectedPeriod ==
-                                                                          'Yearly'
+                                                                        BoxDecoration(
+                                                                      color: selectedPeriod.selectedPeriod ==
+                                                                              'Yearly'
                                                                           ? ColorUtil
-                                                                          .PurpleBackground
+                                                                              .PurpleBackground
                                                                           : Colors
-                                                                          .transparent,
+                                                                              .transparent,
                                                                       border: Border.all(
                                                                           color: ColorUtil
                                                                               .PurpleBackground,
-                                                                          width: 1),
+                                                                          width:
+                                                                              1),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          5),
+                                                                          BorderRadius.circular(
+                                                                              5),
                                                                     ),
-                                                                    child: AutoSizeText(
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "Yearly",
                                                                       style: TextStyle(
-                                                                          color: selectedPeriod
-                                                                              .selectedPeriod ==
-                                                                              'Yearly'
+                                                                          color: selectedPeriod.selectedPeriod == 'Yearly'
                                                                               ? Colors
-                                                                              .white
+                                                                                  .white
                                                                               : ColorUtil
-                                                                              .PurpleBackground,
-                                                                          fontSize: 15,
+                                                                                  .PurpleBackground,
+                                                                          fontSize:
+                                                                              15,
                                                                           fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                              FontWeight.w500),
                                                                       textAlign:
-                                                                      TextAlign
-                                                                          .center,
+                                                                          TextAlign
+                                                                              .center,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                             Center(
-                                                              child: AnimatedContainer(
+                                                              child:
+                                                                  AnimatedContainer(
                                                                 duration: Duration(
-                                                                    milliseconds: 500),
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    bottom: 30),
+                                                                    milliseconds:
+                                                                        500),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            30),
                                                                 child: InkWell(
                                                                   onTap: () {
                                                                     showModalBottomSheet(
                                                                         isScrollControlled:
-                                                                        true,
+                                                                            true,
                                                                         shape:
-                                                                        RoundedRectangleBorder(
+                                                                            RoundedRectangleBorder(
                                                                           borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
+                                                                              BorderRadius.only(
                                                                             topLeft:
-                                                                            const Radius.circular(
-                                                                                10),
+                                                                                const Radius.circular(10),
                                                                             topRight:
-                                                                            const Radius.circular(
-                                                                                10),
+                                                                                const Radius.circular(10),
                                                                           ),
                                                                         ),
                                                                         context:
-                                                                        context,
+                                                                            context,
                                                                         builder:
                                                                             (context) {
                                                                           return SingleChildScrollView(
                                                                             scrollDirection:
-                                                                            Axis.vertical,
+                                                                                Axis.vertical,
                                                                             child:
-                                                                            WillPopScope(
-                                                                              onWillPop:
-                                                                                  () async =>
-                                                                              false,
+                                                                                WillPopScope(
+                                                                              onWillPop: () async => false,
                                                                               child: Container(
                                                                                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                                                                   color: Colors.transparent,
@@ -592,53 +605,50 @@ class TransactionScreen extends StatelessWidget {
                                                                           );
                                                                         });
                                                                   },
-                                                                  child: Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                  child:
+                                                                      Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         1.2,
-                                                                    padding: EdgeInsets
-                                                                        .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         vertical:
-                                                                        12,
+                                                                            12,
                                                                         horizontal:
-                                                                        55),
+                                                                            55),
                                                                     decoration:
-                                                                    BoxDecoration(
-                                                                      color: selectedPeriod
-                                                                          .selectedPeriod ==
-                                                                          'Custom'
+                                                                        BoxDecoration(
+                                                                      color: selectedPeriod.selectedPeriod ==
+                                                                              'Custom'
                                                                           ? ColorUtil
-                                                                          .PurpleBackground
+                                                                              .PurpleBackground
                                                                           : Colors
-                                                                          .transparent,
+                                                                              .transparent,
                                                                       border: Border.all(
                                                                           color: ColorUtil
                                                                               .PurpleBackground,
-                                                                          width: 1),
+                                                                          width:
+                                                                              1),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          5),
+                                                                          BorderRadius.circular(
+                                                                              5),
                                                                     ),
-                                                                    child: AutoSizeText(
+                                                                    child:
+                                                                        AutoSizeText(
                                                                       "Custom",
                                                                       style: TextStyle(
-                                                                          color: selectedPeriod
-                                                                              .selectedPeriod ==
-                                                                              'Custom'
+                                                                          color: selectedPeriod.selectedPeriod == 'Custom'
                                                                               ? Colors
-                                                                              .white
+                                                                                  .white
                                                                               : ColorUtil
-                                                                              .PurpleBackground,
-                                                                          fontSize: 15,
+                                                                                  .PurpleBackground,
+                                                                          fontSize:
+                                                                              15,
                                                                           fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                              FontWeight.w500),
                                                                       textAlign:
-                                                                      TextAlign
-                                                                          .center,
+                                                                          TextAlign
+                                                                              .center,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -652,17 +662,19 @@ class TransactionScreen extends StatelessWidget {
                                             });
                                       },
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width / 4,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                4,
                                         height: 30,
                                         decoration: BoxDecoration(
                                             color: ColorUtil.PurpleBackground,
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(5))),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5))),
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              padding:
-                                              EdgeInsets.symmetric(horizontal: 10),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
                                               child: Icon(
                                                 Icons.date_range,
                                                 color: Colors.white,
@@ -672,7 +684,8 @@ class TransactionScreen extends StatelessWidget {
                                             Container(
                                               child: AutoSizeText(
                                                 selectedPeriod.selectedPeriod,
-                                                style: TextStyle(color: Colors.white),
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ],
@@ -680,7 +693,8 @@ class TransactionScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.65,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.65,
                                       height: 30,
                                       child: TextField(
                                         decoration: InputDecoration(
@@ -689,8 +703,8 @@ class TransactionScreen extends StatelessWidget {
                                             size: 20,
                                           ),
                                           border: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(5)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5)),
                                           ),
                                           labelText: 'Search',
                                           labelStyle: TextStyle(fontSize: 15),
@@ -702,58 +716,79 @@ class TransactionScreen extends StatelessWidget {
                               ),
                               Center(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         InkWell(
                                           child: Container(
                                             margin: EdgeInsets.only(left: 5),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                               color: ColorUtil.PurpleAccent,
                                             ),
-                                            width:
-                                            MediaQuery.of(context).size.width / 3 -
+                                            width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3 -
                                                 20,
                                             height: 70,
                                             child: Column(
                                               children: <Widget>[
                                                 Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      vertical: 10, horizontal: 10),
+                                                      vertical: 10,
+                                                      horizontal: 10),
                                                   child: FittedBox(
                                                     fit: BoxFit.fitWidth,
                                                     child: Text(
                                                       'Balance',
                                                       style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                 ),
                                                 Container(
                                                   child: FittedBox(
                                                     fit: BoxFit.fitWidth,
-                                                    child: model.getModel.balance == null ?
-                                                    Text("0",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                      textAlign: TextAlign.center,)
+                                                    child: model.getModel
+                                                                .balance ==
+                                                            null
+                                                        ? Text(
+                                                            "0",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          )
                                                         : Text(
-                                                      model.getModel.balance,
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                      textAlign: TextAlign.center,
-                                                    ),
+                                                            model.getModel
+                                                                .balance,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
                                                   ),
                                                 ),
                                               ],
@@ -764,48 +799,67 @@ class TransactionScreen extends StatelessWidget {
                                           child: Container(
                                             margin: EdgeInsets.only(left: 8),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                               color: ColorUtil.PurpleAccent,
                                             ),
-                                            width:
-                                            MediaQuery.of(context).size.width / 3 -
+                                            width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3 -
                                                 20,
                                             height: 70,
                                             child: Column(
                                               children: <Widget>[
                                                 Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      vertical: 10, horizontal: 10),
+                                                      vertical: 10,
+                                                      horizontal: 10),
                                                   child: FittedBox(
                                                     fit: BoxFit.fitWidth,
                                                     child: Text(
                                                       'Net Income',
                                                       style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                 ),
                                                 Container(
                                                   child: FittedBox(
                                                     fit: BoxFit.fitWidth,
-                                                    child: model.getModel.netIncome == null ?
-                                                    Text("0",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                      textAlign: TextAlign.center,)
+                                                    child: model.getModel
+                                                                .netIncome ==
+                                                            null
+                                                        ? Text(
+                                                            "0",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          )
                                                         : Text(
-                                                      model.getModel.netIncome,
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                      textAlign: TextAlign.center,
-                                                    ),
+                                                            model.getModel
+                                                                .netIncome,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
                                                   ),
                                                 ),
                                               ],
@@ -814,50 +868,70 @@ class TransactionScreen extends StatelessWidget {
                                         ),
                                         InkWell(
                                           child: Container(
-                                            margin: EdgeInsets.only(left: 8,right: 5),
+                                            margin: EdgeInsets.only(
+                                                left: 8, right: 5),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                               color: ColorUtil.PurpleAccent,
                                             ),
-                                            width:
-                                            MediaQuery.of(context).size.width / 3 -
+                                            width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3 -
                                                 20,
                                             height: 70,
                                             child: Column(
                                               children: <Widget>[
                                                 Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      vertical: 10, horizontal: 10),
+                                                      vertical: 10,
+                                                      horizontal: 10),
                                                   child: FittedBox(
                                                     fit: BoxFit.fitWidth,
                                                     child: Text(
                                                       'Net Worth',
                                                       style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
-                                                      textAlign: TextAlign.center,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                 ),
                                                 Container(
                                                   child: FittedBox(
                                                     fit: BoxFit.fitWidth,
-                                                    child:  model.getModel.netWorth == null ?
-                                                    Text("0",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                      textAlign: TextAlign.center,)
+                                                    child: model.getModel
+                                                                .netWorth ==
+                                                            null
+                                                        ? Text(
+                                                            "0",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          )
                                                         : Text(
-                                                      model.getModel.netWorth,
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                      textAlign: TextAlign.center,
-                                                    ),
+                                                            model.getModel
+                                                                .netWorth,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
                                                   ),
                                                 ),
                                               ],
@@ -876,7 +950,8 @@ class TransactionScreen extends StatelessWidget {
                                         color: ColorUtil.greyColor,
                                       ),
                                       height: 25,
-                                      width: MediaQuery.of(context).size.width / 1.05,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.05,
                                       child: ListView.builder(
                                           itemCount: getItemCount.itemCount,
                                           scrollDirection: Axis.horizontal,
@@ -887,22 +962,28 @@ class TransactionScreen extends StatelessWidget {
                                                 dateBarColor.isSelected = index;
                                               },
                                               child: AnimatedContainer(
-                                                duration: Duration(milliseconds: 500),
+                                                duration:
+                                                    Duration(milliseconds: 500),
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                    BorderRadius.circular(5),
-                                                    color:
-                                                    dateBarColor.isSelected == index
-                                                        ? ColorUtil.PurpleBackground
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color: dateBarColor
+                                                                .isSelected ==
+                                                            index
+                                                        ? ColorUtil
+                                                            .PurpleBackground
                                                         : ColorUtil.greyColor),
                                                 height: 25,
-                                                width:
-                                                MediaQuery.of(context).size.width /
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
                                                     5.25,
                                                 child: Container(
                                                   alignment: Alignment.center,
                                                   padding: EdgeInsets.symmetric(
-                                                      vertical: 5, horizontal: 10),
+                                                      vertical: 5,
+                                                      horizontal: 10),
                                                   child: Text(
                                                     'MAR 2020',
                                                     style: TextStyle(
@@ -926,12 +1007,16 @@ class TransactionScreen extends StatelessWidget {
                                     child: Column(
                                       children: <Widget>[
                                         Container(
-                                            width: MediaQuery.of(context).size.width,
-                                            height: MediaQuery.of(context).size.height /
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
                                                 1.6,
                                             color: Colors.transparent,
-                                            padding:
-                                            EdgeInsets.symmetric(horizontal: 10),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             margin: EdgeInsets.only(top: 15),
                                             child: ListView.builder(
                                               itemCount: model.getModel
@@ -940,49 +1025,64 @@ class TransactionScreen extends StatelessWidget {
                                               itemBuilder: (context, index) {
                                                 return Slidable(
                                                   actionPane:
-                                                  SlidableDrawerActionPane(),
+                                                      SlidableDrawerActionPane(),
                                                   actionExtentRatio: 0.20,
                                                   child: Container(
-                                                    width: MediaQuery.of(context)
-                                                        .size
-                                                        .width,
-                                                    margin: EdgeInsets.symmetric(
-                                                        vertical: 5),
-                                                    padding: EdgeInsets.symmetric(
-                                                        vertical: 15, horizontal: 15),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 15,
+                                                            horizontal: 15),
                                                     decoration: BoxDecoration(
                                                         border: Border.all(
                                                             color: ColorUtil
                                                                 .PurpleBackground,
                                                             width: 2),
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(5)),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5)),
                                                         boxShadow: [
                                                           BoxShadow(
-                                                              color: Color(0XFFD3D6DA)
-                                                                  .withAlpha(50),
-                                                              offset: Offset(1, 2),
+                                                              color: Color(
+                                                                      0XFFD3D6DA)
+                                                                  .withAlpha(
+                                                                      50),
+                                                              offset:
+                                                                  Offset(1, 2),
                                                               blurRadius: 1,
                                                               spreadRadius: 1)
                                                         ],
                                                         color: Colors.white),
                                                     child: InkWell(
                                                       onTap: () =>
-                                                          readBottomSheet(context),
+                                                          readBottomSheet(
+                                                              context),
                                                       child: Container(
                                                         child: Column(
                                                           children: <Widget>[
                                                             Row(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                              children: <Widget>[
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: <
+                                                                  Widget>[
                                                                 Container(
-                                                                  margin:
-                                                                  EdgeInsets.only(
-                                                                      left: 10),
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              10),
                                                                   child: Text(
-                                                                    model.getModel.listTransactions[index]
+                                                                    model
+                                                                        .getModel
+                                                                        .listTransactions[
+                                                                            index]
                                                                         .date
                                                                         .day
                                                                         .toString(),
@@ -990,222 +1090,240 @@ class TransactionScreen extends StatelessWidget {
                                                                         color: Colors
                                                                             .black,
                                                                         fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                        fontSize: 20),
-                                                                    textAlign: TextAlign
-                                                                        .center,
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize:
+                                                                            20),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
                                                                   ),
                                                                 ),
                                                                 Expanded(
                                                                   flex: 2,
-                                                                  child: Container(
-                                                                    margin:
-                                                                    EdgeInsets.only(
-                                                                        left: 15),
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            left:
+                                                                                15),
                                                                     child: AutoSizeText(
-                                                                        model.getModel.listTransactions[index]
+                                                                        model
+                                                                            .getModel
+                                                                            .listTransactions[
+                                                                                index]
                                                                             .description,
-                                                                        maxLines: 2,
+                                                                        maxLines:
+                                                                            2,
                                                                         style: TextStyle(
                                                                             color: Colors
                                                                                 .black,
                                                                             fontSize:
-                                                                            16,
+                                                                                16,
                                                                             fontWeight:
-                                                                            FontWeight
-                                                                                .w500)),
+                                                                                FontWeight.w500)),
                                                                   ),
                                                                 ),
                                                                 Expanded(
-                                                                  child: Container(
-                                                                    margin:
-                                                                    EdgeInsets.only(
-                                                                        left: 10,
-                                                                        right: 10),
-                                                                    child: AutoSizeText(
-                                                                      model.getModel.listTransactions[index]
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10),
+                                                                    child:
+                                                                        AutoSizeText(
+                                                                      model
+                                                                          .getModel
+                                                                          .listTransactions[
+                                                                              index]
                                                                           .amount,
                                                                       stepGranularity:
-                                                                      2,
+                                                                          2,
                                                                       overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                                          TextOverflow
+                                                                              .ellipsis,
                                                                       style: TextStyle(
                                                                           color: Colors
                                                                               .black,
-                                                                          fontWeight:
-                                                                          FontWeight
+                                                                          fontWeight: FontWeight
                                                                               .w500,
-                                                                          fontSize: 16),
-                                                                      maxLines: 3,
-                                                                      maxFontSize: 18,
-                                                                      minFontSize: 6,
+                                                                          fontSize:
+                                                                              16),
+                                                                      maxLines:
+                                                                          3,
+                                                                      maxFontSize:
+                                                                          18,
+                                                                      minFontSize:
+                                                                          6,
                                                                     ),
                                                                   ),
                                                                 )
                                                               ],
                                                             ),
                                                             Container(
-                                                              padding: EdgeInsets.only(
-                                                                  top: 5),
+                                                              padding: EdgeInsets
+                                                                  .only(top: 5),
                                                               child: Row(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                                children: <Widget>[
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: <
+                                                                    Widget>[
                                                                   Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         5,
                                                                     height: 20,
                                                                     decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius
-                                                                            .all(Radius
-                                                                            .circular(
-                                                                            5)),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                5)),
                                                                         color: ColorUtil
                                                                             .PurpleBackground),
-                                                                    child: Container(
-                                                                      padding: EdgeInsets
-                                                                          .symmetric(
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.symmetric(
                                                                           vertical:
-                                                                          5,
+                                                                              5,
                                                                           horizontal:
-                                                                          5),
+                                                                              5),
                                                                       child:
-                                                                      AutoSizeText(
-                                                                        model.getModel.listTransactions[index]
+                                                                          AutoSizeText(
+                                                                        model
+                                                                            .getModel
+                                                                            .listTransactions[index]
                                                                             .date
                                                                             .month
                                                                             .toString(),
                                                                         style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                            11),
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 11),
                                                                         textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                        maxLines: 1,
-                                                                        minFontSize: 10,
+                                                                            TextAlign.center,
+                                                                        maxLines:
+                                                                            1,
+                                                                        minFontSize:
+                                                                            10,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         5,
                                                                     height: 20,
                                                                     decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius
-                                                                            .all(Radius
-                                                                            .circular(
-                                                                            5)),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                5)),
                                                                         color: Colors
                                                                             .deepPurple),
-                                                                    child: Container(
-                                                                      padding: EdgeInsets
-                                                                          .symmetric(
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.symmetric(
                                                                           vertical:
-                                                                          5,
+                                                                              5,
                                                                           horizontal:
-                                                                          5),
+                                                                              5),
                                                                       child:
-                                                                      AutoSizeText(
-                                                                        model.getModel.listTransactions[index].transactionName,
+                                                                          AutoSizeText(
+                                                                        model
+                                                                            .getModel
+                                                                            .listTransactions[index]
+                                                                            .transactionName,
                                                                         stepGranularity:
-                                                                        1,
+                                                                            1,
                                                                         style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                            11),
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 11),
                                                                         textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                        maxLines: 1,
-                                                                        minFontSize: 10,
+                                                                            TextAlign.center,
+                                                                        maxLines:
+                                                                            1,
+                                                                        minFontSize:
+                                                                            10,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         5,
                                                                     height: 20,
                                                                     decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius
-                                                                            .all(Radius
-                                                                            .circular(
-                                                                            5)),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                5)),
                                                                         color: ColorUtil
                                                                             .PurpleAccent),
-                                                                    child: Container(
-                                                                      padding: EdgeInsets
-                                                                          .symmetric(
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.symmetric(
                                                                           vertical:
-                                                                          5,
+                                                                              5,
                                                                           horizontal:
-                                                                          5),
+                                                                              5),
                                                                       child:
-                                                                      AutoSizeText(
-                                                                        model.getModel.listTransactions[index]
+                                                                          AutoSizeText(
+                                                                        model
+                                                                            .getModel
+                                                                            .listTransactions[index]
                                                                             .accountFormView,
                                                                         style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                            11),
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 11),
                                                                         textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                        maxLines: 1,
-                                                                        minFontSize: 10,
+                                                                            TextAlign.center,
+                                                                        maxLines:
+                                                                            1,
+                                                                        minFontSize:
+                                                                            10,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   Container(
-                                                                    width: MediaQuery.of(
-                                                                        context)
-                                                                        .size
-                                                                        .width /
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
                                                                         5,
                                                                     height: 20,
                                                                     decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius
-                                                                            .all(Radius
-                                                                            .circular(
-                                                                            5)),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                5)),
                                                                         color: ColorUtil
                                                                             .PurpleLow),
-                                                                    child: Container(
-                                                                      padding: EdgeInsets
-                                                                          .symmetric(
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.symmetric(
                                                                           vertical:
-                                                                          5,
+                                                                              5,
                                                                           horizontal:
-                                                                          5),
+                                                                              5),
                                                                       child:
-                                                                      AutoSizeText(
-                                                                        model.getModel.listTransactions[index]
+                                                                          AutoSizeText(
+                                                                        model
+                                                                            .getModel
+                                                                            .listTransactions[index]
                                                                             .accountToView,
                                                                         style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                            11),
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 11),
                                                                         textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                        maxLines: 1,
-                                                                        minFontSize: 10,
+                                                                            TextAlign.center,
+                                                                        maxLines:
+                                                                            1,
+                                                                        minFontSize:
+                                                                            10,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -1224,9 +1342,11 @@ class TransactionScreen extends StatelessWidget {
                                                         width: 40,
                                                         decoration: BoxDecoration(
                                                             borderRadius:
-                                                            BorderRadius.circular(
-                                                                50),
-                                                            color: ColorUtil.redColor),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50),
+                                                            color: ColorUtil
+                                                                .redColor),
                                                         child: Icon(
                                                           Icons.delete,
                                                           color: Colors.white,
@@ -1234,12 +1354,15 @@ class TransactionScreen extends StatelessWidget {
                                                         ),
                                                       ),
                                                       onTap: () {
-                                                        final deleteSnackBar = SnackBar(
+                                                        final deleteSnackBar =
+                                                            SnackBar(
                                                           content: AutoSizeText(
                                                               'Transaction Deleted'),
-                                                          action: SnackBarAction(
+                                                          action:
+                                                              SnackBarAction(
                                                             label: 'Undo',
-                                                            textColor: ColorUtil.PurpleLight,
+                                                            textColor: ColorUtil
+                                                                .PurpleLight,
                                                             onPressed: () {
                                                               // Some code to undo the change.
                                                             },
@@ -1249,7 +1372,7 @@ class TransactionScreen extends StatelessWidget {
                                                         // it to show a SnackBar.
                                                         Scaffold.of(context)
                                                             .showSnackBar(
-                                                            deleteSnackBar);
+                                                                deleteSnackBar);
                                                       },
                                                       color: Colors.transparent,
                                                     ),
@@ -1267,15 +1390,14 @@ class TransactionScreen extends StatelessWidget {
                         } else {
                           return Center(
                               child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-                                height: 50,
-                                width: 50,
-                                child: CircularProgressIndicator(),
-                              )
-                          );
+                            margin: EdgeInsets.symmetric(
+                                vertical: 50, horizontal: 50),
+                            height: 50,
+                            width: 50,
+                            child: CircularProgressIndicator(),
+                          ));
                         }
-                      }
-                  ),
+                      }),
                 ),
               ),
             ),
@@ -1285,7 +1407,7 @@ class TransactionScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtil.PurpleBackground,
         onPressed: () {
-          showModalBottomSheet (
+          showModalBottomSheet(
               isScrollControlled: true,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -1313,7 +1435,8 @@ class TransactionScreen extends StatelessWidget {
                                   margin: EdgeInsets.only(top: 25),
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       AutoSizeText(
                                         'Transaction Detail',
@@ -1337,15 +1460,15 @@ class TransactionScreen extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   margin: EdgeInsets.only(bottom: 10, top: 5),
-                                  child: TextFormField(
+                                  child: TextField(
                                     controller: _transactionController,
                                     decoration: InputDecoration(
                                       icon: Icon(
                                         Icons.card_membership,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       labelText: 'Transaction Type',
                                     ),
@@ -1355,29 +1478,13 @@ class TransactionScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   margin: EdgeInsets.only(bottom: 20, top: 5),
                                   child: TextFormField(
-                                    onTap: () async {
-                                      final selectedDate = await _selectDate(context);
-                                      if (selectedDate == null) return;
-
-                                      final selectedTime = await _selectTime(context);
-                                      if (selectedTime == null) return;
-
-                                      DateTime _dateTime;
-
-                                      _dateTime = DateTime(
-                                          selectedDate.year,
-                                          selectedDate.month,
-                                          selectedDate.day,
-                                          selectedTime.hour,
-                                          selectedTime.minute);
-                                    },
+                                    
                                     controller: _dateController,
-                                    readOnly: true,
                                     decoration: InputDecoration(
                                       icon: Icon(Icons.date_range),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       labelText: 'Date',
                                     ),
@@ -1393,8 +1500,8 @@ class TransactionScreen extends StatelessWidget {
                                         Icons.supervisor_account,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       labelText: 'Account From',
                                     ),
@@ -1410,8 +1517,8 @@ class TransactionScreen extends StatelessWidget {
                                         Icons.group_add,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       labelText: 'Account To',
                                     ),
@@ -1421,14 +1528,14 @@ class TransactionScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   margin: EdgeInsets.only(bottom: 10, top: 5),
                                   child: TextFormField(
-                                    controller: _descriptionController,
+                                    controller: _descController,
                                     decoration: InputDecoration(
                                       icon: Icon(
                                         Icons.description,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       labelText: 'Description',
                                     ),
@@ -1438,14 +1545,14 @@ class TransactionScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   margin: EdgeInsets.only(bottom: 10, top: 5),
                                   child: TextFormField(
-                                    controller: _priceController,
+                                    controller: _amountController,
                                     decoration: InputDecoration(
                                       icon: Icon(
                                         Icons.attach_money,
                                       ),
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       labelText: 'Price',
                                     ),
@@ -1467,12 +1574,14 @@ class TransactionScreen extends StatelessWidget {
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 12, horizontal: 20),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                             ),
                                             child: Text(
                                               "Cancel",
                                               style: TextStyle(
-                                                  color: ColorUtil.PurpleBackground,
+                                                  color: ColorUtil
+                                                      .PurpleBackground,
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500),
                                               textAlign: TextAlign.center,
@@ -1489,31 +1598,38 @@ class TransactionScreen extends StatelessWidget {
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 12, horizontal: 50),
                                             decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(5),
-                                                color: ColorUtil.PurpleBackground),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color:
+                                                    ColorUtil.PurpleBackground),
                                             child: Row(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
                                                   "Save",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w500),
+                                                      fontWeight:
+                                                          FontWeight.w500),
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ],
                                             )),
                                         onTap: () {
-                                          transactionService.postTransaction("1", _transactionController.text);
-                                          transactionService.postTransaction("1", _dateController);
-                                          transactionService.postTransaction("1", _accFromController.text);
-                                          transactionService.postTransaction("1", _accToController.text);
-                                          transactionService.postTransaction("1", _descriptionController.text);
-                                          transactionService.postTransaction("1", _priceController.text);
+                                          Navigator.pop(context);
+                                          TransactionService()
+                                              .createTransaction(
+                                                  "1",
+                                                  _dateController.text,
+                                                  _transactionController.text,
+                                                  _accFromController.text,
+                                                  _accToController.text,
+                                                  _descController.text,
+                                                  _amountController.text);
                                         },
                                       ),
                                     ],
@@ -2035,7 +2151,7 @@ void readBottomSheet(BuildContext context) async {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Transaction Type',
                             ),
@@ -2066,7 +2182,7 @@ void readBottomSheet(BuildContext context) async {
                               icon: Icon(Icons.date_range),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Date',
                             ),
@@ -2083,7 +2199,7 @@ void readBottomSheet(BuildContext context) async {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Account From',
                             ),
@@ -2100,7 +2216,7 @@ void readBottomSheet(BuildContext context) async {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Account To',
                             ),
@@ -2117,7 +2233,7 @@ void readBottomSheet(BuildContext context) async {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Description',
                             ),
@@ -2134,7 +2250,7 @@ void readBottomSheet(BuildContext context) async {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
                               labelText: 'Price',
                             ),
@@ -2182,9 +2298,9 @@ void readBottomSheet(BuildContext context) async {
                                         color: ColorUtil.PurpleBackground),
                                     child: Row(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: <Widget>[
                                         Text(
                                           "Save",
@@ -2209,7 +2325,6 @@ void readBottomSheet(BuildContext context) async {
         );
       });
 }
-
 
 Future<DateTime> _selectDate(BuildContext context) => showDatePicker(
       context: context,

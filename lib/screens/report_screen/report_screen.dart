@@ -13,7 +13,6 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     periode = "Monthly";
     type = "Cash Flow";

@@ -3,6 +3,7 @@ import 'package:money_me_app/models/budget_model.dart';
 import 'package:money_me_app/services/budget_services.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class FuturePage extends StatefulWidget {
   @override
@@ -12,36 +13,33 @@ class FuturePage extends StatefulWidget {
 class _FuturePageState extends State<FuturePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Future<Budget> futureBudget;
-
   @override
   void initState() {
     super.initState();
-    futureBudget = fetchBudget();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: FutureBuilder<Budget>(
-        future: futureBudget,
-        builder: (context, snapshot) {
-          if (snapshot.data.listFutureBudget.length != 0) {
-            return ListView.builder(
-                itemCount: snapshot.data.listFutureBudget.length, //statis
-                itemBuilder: (context, index) {
-                  return budgetCard(snapshot.data, index);
-                });
-          } else if (snapshot.data.listFutureBudget.length == 0) {
-            return Center(child: Text('Tidak ada budget'));
-          }
+      body: Consumer<BudgetProvider>(
+        builder: (context, data, _) => FutureBuilder(
+          future: data.budget,
+          builder: (context, dataBudget) {
+            if (dataBudget.hasData) {
+              print("Future page has data");
+              return ListView.builder(
+                  itemCount: dataBudget.data.listFutureBudget.length,
+                  itemBuilder: (context, index) =>
+                      budgetCard(dataBudget.data.listFutureBudget, index));
+            }
 
-          return Center(
-              child: CircularProgressIndicator(
-            backgroundColor: Colors.purple,
-          ));
-        },
+            return Center(
+                child: CircularProgressIndicator(
+              backgroundColor: Colors.purple,
+            ));
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtil.PurpleBackground,
@@ -54,7 +52,7 @@ class _FuturePageState extends State<FuturePage> {
   }
 
   Card budgetCard(data, int index) {
-    dynamic dataActive = data.listFutureBudget[index];
+    dynamic dataFuture = data[index];
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -64,10 +62,10 @@ class _FuturePageState extends State<FuturePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "Account name",
+                    dataFuture.accountName,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
-                  Text("Expense"),
+                  Text(dataFuture.balance),
                 ]),
             SizedBox(height: 20),
             new LinearPercentIndicator(
@@ -81,8 +79,8 @@ class _FuturePageState extends State<FuturePage> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(dataActive.dateFrom),
-                  Text(dataActive.budget)
+                  Text(dataFuture.dateFrom),
+                  Text(dataFuture.budget)
                 ]),
           ],
         ),

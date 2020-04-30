@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_me_app/models/budget_model.dart';
 import 'package:money_me_app/services/budget_services.dart';
+import 'package:money_me_app/services/settings_services.dart';
 import 'package:money_me_app/utils/color_util.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class ActivePage extends StatefulWidget {
   @override
@@ -16,30 +19,43 @@ class _ActivePageState extends State<ActivePage> {
 
   DateTime _dateTime;
 
+  DateTime _dateFrom, _dateTo;
+  DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
+
+  final _budgetController = new TextEditingController();
+  final _accountController = new TextEditingController();
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    futureBudget = fetchBudget();
+    // futureBudget = fetchBudget();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: FutureBuilder<Budget>(
-        future: futureBudget,
-        builder: (context, snapshot) {
-          if (snapshot.data.listActiveBudget.length != 0) {
-            return ListView.builder(
-                itemCount: snapshot.data.listActiveBudget.length, //statis
-                itemBuilder: (context, index) {
-                  return budgetCard(snapshot.data, index);
-                });
-          }
+      body: Consumer<BudgetProvider>(
+          builder: (context, budget, _) => FutureBuilder(
+              future: budget.budget,
+              builder: (context, dataBudget) {
+                if (dataBudget.hasData) {
+                  print("berhasil");
 
-          return Center(child: CircularProgressIndicator(backgroundColor: Colors.purple,));
-        },
-      ),
+                  return ListView.builder(
+                    itemCount: dataBudget.data.listActiveBudget.length,
+                    itemBuilder: (context, index) {
+                      return budgetCard(
+                          dataBudget.data.listActiveBudget, index);
+                    },
+                  );
+                } else if (dataBudget.hasError) {
+                  return Text(dataBudget.error);
+                }
+
+                return Center(child: CircularProgressIndicator());
+              })),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtil.PurpleBackground,
         onPressed: () {
@@ -51,7 +67,9 @@ class _ActivePageState extends State<ActivePage> {
   }
 
   Card budgetCard(data, int index) {
-    dynamic dataActive = data.listActiveBudget[index];
+    dynamic dataActive = data[index];
+    var _budget = double.parse(dataActive.balance);
+    var _expense = double.parse(dataActive.budget);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -61,10 +79,10 @@ class _ActivePageState extends State<ActivePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "Account name",
+                    dataActive.accountName,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
-                  Text("Expense"),
+                  Text(dataActive.balance),
                 ]),
             SizedBox(height: 20),
             new LinearPercentIndicator(
@@ -73,6 +91,7 @@ class _ActivePageState extends State<ActivePage> {
               percent: 0.5,
               backgroundColor: Colors.blue[200],
               progressColor: Colors.purple[100],
+              center: new Text((_budget / _expense).toString()),
             ),
             SizedBox(height: 20),
             Row(
@@ -135,59 +154,134 @@ class _ActivePageState extends State<ActivePage> {
                             ],
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          margin: EdgeInsets.only(bottom: 10, top: 5),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.credit_card,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              ),
-                              labelText: 'Expense Account',
-                            ),
-                          ),
+                        TextField(
+                          onTap: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: _dateFrom == null
+                                        ? DateTime.now()
+                                        : _dateFrom,
+                                    firstDate:
+                                        DateTime(DateTime.now().year - 10),
+                                    lastDate:
+                                        DateTime(DateTime.now().year + 10))
+                                .then((onValue) => {
+                                      setState(() {
+                                        _dateFrom = onValue;
+                                      })
+                                    });
+                          },
+                          readOnly: false,
+                          decoration: InputDecoration(
+                              labelText: _dateFrom == null
+                                  ? "Date From"
+                                  : _dateFormat.format(_dateFrom).toString()),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          margin: EdgeInsets.only(bottom: 10, top: 5),
-                          child: TextFormField(
-                            onTap: () async {
-                              final selectedDate = await selectDate(context);
-                              if (selectedDate == 0) return;
-                            },
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.description,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              ),
-                              labelText: 'Account Date',
-                            ),
-                          ),
+                        TextField(
+                          onTap: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: _dateFrom == null
+                                        ? DateTime.now()
+                                        : _dateTo,
+                                    firstDate:
+                                        DateTime(DateTime.now().year - 10),
+                                    lastDate:
+                                        DateTime(DateTime.now().year + 10))
+                                .then((onValue) => {
+                                      setState(() {
+                                        _dateTo = onValue;
+                                      })
+                                    });
+                          },
+                          readOnly: false,
+                          decoration: InputDecoration(
+                              labelText: _dateTo == null
+                                  ? "Date To"
+                                  : _dateFormat.format(_dateTo).toString()),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          margin: EdgeInsets.only(bottom: 10, top: 5),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.attach_money,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              ),
-                              labelText: 'Budget Amount',
-                            ),
-                          ),
+                        TextField(
+                          controller: _budgetController,
+                          decoration: InputDecoration(labelText: 'Budget'),
                         ),
+                        TextField(
+                          controller: _accountController,
+                          decoration: InputDecoration(labelText: 'Account'),
+                        ),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(horizontal: 20),
+                        //   margin: EdgeInsets.only(bottom: 10, top: 5),
+                        //   child: TextFormField(
+                        //     decoration: InputDecoration(
+                        //       icon: Icon(
+                        //         Icons.credit_card,
+                        //       ),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(5)),
+                        //       ),
+                        //       labelText: 'Expense Account',
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(horizontal: 20),
+                        //   margin: EdgeInsets.only(bottom: 10, top: 5),
+                        //   child: TextFormField(
+                        //     onTap: () async {
+                        //       final selectedDate = await selectDate(context);
+                        //       if (selectedDate == 0) return;
+                        //     },
+                        //     readOnly: true,
+                        //     decoration: InputDecoration(
+                        //       icon: Icon(
+                        //         Icons.description,
+                        //       ),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(5)),
+                        //       ),
+                        //       labelText: 'Account Date',
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(horizontal: 20),
+                        //   margin: EdgeInsets.only(bottom: 10, top: 5),
+                        //   child: TextFormField(
+                        //     onTap: () async {
+                        //       final selectedDate = await selectDate(context);
+                        //       if (selectedDate == 0) return;
+                        //     },
+                        //     readOnly: true,
+                        //     decoration: InputDecoration(
+                        //       icon: Icon(
+                        //         Icons.description,
+                        //       ),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(5)),
+                        //       ),
+                        //       labelText: 'Account Date',
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(horizontal: 20),
+                        //   margin: EdgeInsets.only(bottom: 10, top: 5),
+                        //   child: TextFormField(
+                        //     decoration: InputDecoration(
+                        //       icon: Icon(
+                        //         Icons.attach_money,
+                        //       ),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(5)),
+                        //       ),
+                        //       labelText: 'Budget Amount',
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           margin: EdgeInsets.only(bottom: 25, top: 15),
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -216,39 +310,50 @@ class _ActivePageState extends State<ActivePage> {
                                     ),
                                   ),
                                   onTap: () => Navigator.pop(context)),
-                              InkWell(
-                                focusColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                child: Container(
-                                    alignment: Alignment.centerRight,
-                                    margin: EdgeInsets.only(left: 5),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 50),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: ColorUtil.PurpleBackground),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          "Save",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    )),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  _scaffoldKey.currentState
-                                      .showSnackBar(_snackBar());
-                                },
+                              Consumer<BudgetProvider>(
+                                builder: (context, budget, _) => InkWell(
+                                  focusColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  child: Container(
+                                      alignment: Alignment.centerRight,
+                                      margin: EdgeInsets.only(left: 5),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 50),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: ColorUtil.PurpleBackground),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            "Save",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )),
+                                  onTap: () {
+                                    budget.budget = budget.createBudget(
+                                        _dateFormat
+                                            .format(_dateFrom)
+                                            .toString(),
+                                        _dateFormat.format(_dateTo).toString(),
+                                        _budgetController.text,
+                                        _accountController.text);
+                                    ;
+                                    Navigator.pop(context);
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(_snackBar());
+                                  },
+                                ),
                               ),
                             ],
                           ),

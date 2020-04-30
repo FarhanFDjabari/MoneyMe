@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_me_app/models/budget_model.dart';
 import 'package:money_me_app/services/budget_services.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class PastPage extends StatefulWidget {
   @override
@@ -9,41 +9,41 @@ class PastPage extends StatefulWidget {
 }
 
 class _PastPageState extends State<PastPage> {
-  Future<Budget> futureBudget;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    futureBudget = fetchBudget();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<Budget>(
-        future: futureBudget,
-        builder: (context, snapshot) {
-          if (snapshot.data.listActiveBudget.length != 0) {
-            return ListView.builder(
-                itemCount: snapshot.data.listActiveBudget.length, //statis
-                itemBuilder: (context, index) {
-                  return budgetCard(snapshot.data, index);
-                });
-          }
+      body: Consumer<BudgetProvider>(
+        builder: (context, budget, _) => FutureBuilder(
+          future: budget.budget,
+          builder: (context, dataBudget) {
+            if (dataBudget.hasData) {
+              print("PastPage ada data");
+              return ListView.builder(
+                  itemCount: dataBudget.data.listPastBudget.length,
+                  itemBuilder: (context, index) {
+                    return budgetCard(dataBudget.data.listPastBudget, index);
+                  });
+            }
 
-          return Center(
-              child: CircularProgressIndicator(
-            backgroundColor: Colors.purple,
-          ));
-        },
+            return Center(
+                child: CircularProgressIndicator(
+              backgroundColor: Colors.purple,
+            ));
+          },
+        ),
       ),
     );
   }
 }
 
 Card budgetCard(data, int index) {
-  dynamic dataActive = data.listActiveBudget[index];
+  dynamic dataPast = data[index];
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -53,10 +53,10 @@ Card budgetCard(data, int index) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Account name",
+                  dataPast.accountName,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                Text("Expense"),
+                Text(dataPast.balance),
               ]),
           SizedBox(height: 20),
           new LinearPercentIndicator(
@@ -70,8 +70,8 @@ Card budgetCard(data, int index) {
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(dataActive.dateFrom),
-                Text(dataActive.budget)
+                Text(dataPast.dateFrom),
+                Text(dataPast.budget)
               ]),
         ],
       ),
